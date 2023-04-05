@@ -1,8 +1,9 @@
-bool p;
+bool p = true;
 
 active proctype A()
 {
-  true;
+  p;
+  p = false;
 }
 
 ltl l01 { p }
