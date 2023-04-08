@@ -27,5 +27,7 @@ p : 原子命題
 - p -> []<>q : pimpalevq.md, pimpalevq01.pml
 - p -> <>[]q : pimpevalq.md, pimpevalq01.pml
 
+- [](p -> <>q) : 応答性 : al_pimpevq.md, al_pimpevq01.pml
+- []<>p -> q : 無条件公平性 : alevpimpq.md, alevpimpq01.pml
 
 ## Never Claim
