@@ -309,7 +309,7 @@ hash conflicts:         0 (resolved)
 
 Stats on memory usage (in Megabytes):
     0.001	equivalent memory usage for states (stored*(State-vector + overhead))
-    0.288	actual memory usage for states
+    0.286	actual memory usage for states
   128.000	memory used for hash table (-w24)
     0.534	memory used for DFS stack (-m10000)
   128.730	total actual memory usage
@@ -329,7 +329,7 @@ p,qの値に着目してエラートレイルを確認すると以下でエラ�
 ### 結果が p = false, q = false となっているもの
 #### !p && !q でassertion violateが選択されたケース
 ```
-$ spin -t2 tmp01.pml
+$ spin -t2 puq05.pml
 ltl l01: (p) U (q)
 Never claim moves to line 4	[(!(q))]
           p = 0, q = 0
@@ -347,7 +347,7 @@ spin: trail ends after 10 steps
 
 #### !p && !q 成立時に !q 側が選択され受理状態となったケース
 ```
-$ spin -t1 tmp01.pml
+$ spin -t1 puq05.pml
 ltl l01: (p) U (q)
 Never claim moves to line 4	[(!(q))]
           p = 0, q = 0
@@ -366,7 +366,7 @@ spin: trail ends after 10 steps
 !qが成立し続けたため、qが今を含めたどこかで成立するという条件が成立しなかったため、反例となっている。
 
 ```
-$ spin -t17 tmp01.pml
+$ spin -t17 puq05.pml
 ltl l01: (p) U (q)
 Never claim moves to line 4	[(!(q))]
           p = 1, q = 0
