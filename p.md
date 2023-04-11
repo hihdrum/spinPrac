@@ -45,12 +45,15 @@ T0_init:
 # サンプルモデル1
 
 ```Promela
+
 bool p = true;
 
 active proctype A()
 {
   p;
 }
+
+ltl l01 { p }
 ```
 
 ## 検証結果
@@ -91,6 +94,51 @@ unreached in claim l01
 pan: elapsed time 0 seconds
 ```
 
+## テーブル出力(-d)
+
+```
+proctype A
+	state   1 -(tr   5)-> state   2  [id   0 tp   2] [----G] p01.pml:5 => (p)
+	state   2 -(tr   6)-> state   0  [id   1 tp 3500] [--e-L] p01.pml:6 => -end-
+claim l01
+	state   4 -(tr   3)-> state   4  [id   2 tp   2] [-a--G] p01.pml:4 => (!(p))
+
+Transition Type: A=atomic; D=d_step; L=local; G=global
+Source-State Labels: p=progress; e=end; a=accept;
+Note: statement merging was used. Only the first
+      stmnt executed in each merge sequence is shown
+      (use spin -a -o3 to disable statement merging)
+
+pan: elapsed time 1.72e+07 seconds
+pan: rate         0 states/second
+```
+
+## テーブル出力(-d -d)
+
+```
+STEP 3 A
+	state   1 -(tr   5)-> state   2  [id   0 tp   2] [----G] p01.pml:5 => (p)
+	state   2 -(tr   6)-> state   0  [id   1 tp 3500] [--e-L] p01.pml:6 => -end-
+STEP 3 l01
+	state   1 -(tr   3)-> state   4  [id   2 tp   2] [----G] p01.pml:4 => (!(p))
+	state   2 -(tr   0)-> state   0  [id   0 tp   0] [----L] p01.pml:4 => assert(!(!(p)))
+	state   3 -(tr   3)-> state   4  [id   2 tp   2] [----G] p01.pml:4 => (!(p))
+	state   4 -(tr   3)-> state   4  [id   2 tp   2] [-a--G] p01.pml:4 => (!(p))
+	state   5 -(tr   1)-> state   4  [id   6 tp   2] [----L] p01.pml:6 => .(goto)
+	state   6 -(tr   1)-> state   7  [id   7 tp   2] [----L] p01.pml:3 => break
+	state   7 -(tr   1)-> state   8  [id   8 tp   2] [-a--L] p01.pml:7 => (1)
+	state   8 -(tr   4)-> state   0  [id   9 tp 3500] [--e-L] p01.pml:8 => -end-
+
+Transition Type: A=atomic; D=d_step; L=local; G=global
+Source-State Labels: p=progress; e=end; a=accept;
+Note: statement merging was used. Only the first
+      stmnt executed in each merge sequence is shown
+      (use spin -a -o3 to disable statement merging)
+
+pan: elapsed time 1.72e+07 seconds
+pan: rate         0 states/second
+```
+
 # サンプルモデル2
 
 ```Promela
@@ -106,9 +154,8 @@ active proctype A()
 ## 検証結果
 
 異常(errors)は0件となっている。「unreached in proctype A」に着目すると、
-「p = 0」(p = false)の行が報告されており、検証されていないこがわかる。
-これは、Never Claimがp成立のタイミングで検証終了するような記述になっているからと
-考えらる。
+「p = 0」(p = false)の行が報告されており、検証されていないことがわかる。
+これは、Never Claimがp成立時に遷移先なしとなり検証終了するような記述になっているからと考えらる。
 
 ```
 $ spin -run -ltl l01 -a p02.pml 
